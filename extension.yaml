@@ -1,0 +1,114 @@
+name: mongodb-functions
+version: 0.0.1
+specVersion: v1beta  # Firebase Extensions specification version; don't change
+
+# Friendly display name for your extension (~3-5 words)
+displayName: MongoDB Atlas
+
+# Brief description of the task your extension performs (~1 sentence)
+description: >-
+  Perform basic operations like findOne, InsertOne and vectorSearch on MongoDB Atlas
+author:
+  authorName: Venkatesh Shanbhag
+  url: https://mongodb.com
+
+license: Apache-2.0  # Required license
+
+# Public URL for the source code of your extension
+sourceUrl: https://github.com/your-name/your-repo
+
+resources:
+  # - name: mongodbcrud
+  #   type: ev
+  #   properties:
+  #     eventTrigger:
+  #       eventType: providers/google.firebase.database/eventTypes/ref.create
+  #       # DATABASE_INSTANCE (project's default instance) is an auto-populated
+  #       # parameter value. You can also specify an instance.
+  #       resource: projects/_/instances/${DATABASE_INSTANCE}/refs/messages/{pushId}/original
+  #     runtime: "nodejs18"
+  - name: mongodbcrud
+    type: firebaseextensions.v1beta.function
+    properties:
+      runtime: nodejs18
+      httpsTrigger: {}
+
+params:
+  - param: CONNECTION_STRING
+    label: MongoDB Connection String of your cluster
+    description: >-
+      MongoDB connection String
+    type: string
+    default: mongodb+srv://
+    required: true
+    immutable: false
+  - param: DATABASE_NAME
+    label: Mongodb Database name
+    description: >-
+      Mongodb Database name
+    type: string
+    default: test
+    required: true
+    immutable: false
+  - param: COLLECTION_NAME
+    label: Mongodb Collection name
+    description: >-
+      Mongodb Collection name
+    type: string
+    default: test
+    required: true
+    immutable: false
+  - param: EMBEDDING_MODEL_NAME
+    label: Googel VertexAI Model name
+    description: >-
+      Mongodb Model name
+    type: string
+    default: text-embedding-004
+    required: true
+    immutable: false
+  - param: LLM_MODEL_NAME
+    label: Googel VertexAI Model name
+    description: >-
+      Mongodb Model name
+    type: string
+    default: "gemini-1.5-pro"
+    required: true
+    immutable: false
+  - param: INDEX_NAME
+    label: Mongodb Index name
+    description: >-
+      Mongodb Index name
+    type: string
+    default: vector_index
+    required: true
+    immutable: false
+  - param: INDEX_FIELD
+    label: Mongodb Index field
+    description: >-
+      Mongodb Index field
+    type: string
+    default: text
+    required: true
+    immutable: false
+  - param: EMBEDDING_FIELD
+    label: Mongodb Embedding field
+    description: >-
+      Mongodb Embedding field
+    type: string
+    default: embedding
+    required: true
+    immutable: false
+  - param: LLM_PROMPT
+    label: LLM Prompt
+    description: >-
+      LLM Prompt
+    type: string
+    default: "You are a Chatbot. respond the the user only with the context you have from the input provided to you. Don't return anything that is irrelevant to the context."
+    required: true
+    immutable: false
+
+events:
+  - type: test-publisher.mongodb-functions.v1.complete
+    description: >-
+      Occurs with MongoDB function execution is complete
+
