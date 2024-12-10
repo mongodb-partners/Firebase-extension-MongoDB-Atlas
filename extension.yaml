@@ -10,12 +10,12 @@ description: >-
   Perform basic operations like findOne, InsertOne and vectorSearch on MongoDB Atlas
 author:
   authorName: Venkatesh Shanbhag
-  url: https://mongodb.com
+  url: https://www.mongodb.com/products/platform/atlas-cloud-providers/google-cloud
 
 license: Apache-2.0  # Required license
 
 # Public URL for the source code of your extension
-sourceUrl: https://github.com/your-name/your-repo
+sourceUrl: https://github.com/mongodb-partners/Firebase-extension-MongoDB-Atlas
 
 resources:
   # - name: mongodbcrud
