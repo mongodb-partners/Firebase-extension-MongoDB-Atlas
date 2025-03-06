@@ -11,7 +11,7 @@ const app = initializeApp();
 
 export const mongodbcrud = https.onRequest(async (req, res) => {
 
-  const route = req.path; 
+  const route = req.path;
   const payload = req.body;
   const client = new MongoClient(process.env.CONNECTION_STRING);
   const db = client.db(process.env.DATABASE_NAME);
@@ -37,7 +37,7 @@ export const mongodbcrud = https.onRequest(async (req, res) => {
     textKey: process.env.INDEX_FIELD, // The name of the collection field containing the raw content. Defaults to "text"
     embeddingKey: process.env.EMBEDDING_FIELD, // The name of the collection field containing the embedded text. Defaults to "embedding"
   });
-  
+
   try {
     console.log('Connected successfully to MongoDB');
     if (route === "/findOne") {
@@ -46,7 +46,7 @@ export const mongodbcrud = https.onRequest(async (req, res) => {
         try{
           const result = {
             document: await collection.findOne(filter, projection)
-            };  
+            };
             return res.status(200).send(result);
         }
         finally{
@@ -65,7 +65,7 @@ export const mongodbcrud = https.onRequest(async (req, res) => {
     //   finally{
     //     await client.close();
     //   }
-      
+
     // }
     else if(route === '/insertOne'){
       const document = payload.document || {};
@@ -107,20 +107,25 @@ export const mongodbcrud = https.onRequest(async (req, res) => {
           ],
           similaritySearchResults[0].pageContent,
         ]);
-        
+
         return res.status(200).send(aiMsg.content);
-        
+
       }
       finally{
         await client.close();
       }
-      
-    } 
+
+    }
   }
   catch (error) {
 // Handle the error here
-  console.error(error);
+    console.error(error);
   }
-  
-  
+  finally{
+    if(client){
+        await client.close();
+    }
+  }
+
+
 })

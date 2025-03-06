@@ -17,6 +17,12 @@ license: Apache-2.0  # Required license
 # Public URL for the source code of your extension
 sourceUrl: https://github.com/mongodb-partners/Firebase-extension-MongoDB-Atlas
 
+externalServices:
+  - name: MongoDB
+    PricingUri: https://www.mongodb.com/pricing?utm_source=google
+
+icon: icon.png
+
 resources:
   # - name: mongodbcrud
   #   type: ev
@@ -33,12 +39,18 @@ resources:
       runtime: nodejs18
       httpsTrigger: {}
 
+roles:
+  - role: aiplatform.user
+    reason:
+      Allows this extension to access the Gemini family of genai models via
+      Vertex AI if this provider is chosen.
+
 params:
   - param: CONNECTION_STRING
     label: MongoDB Connection String of your cluster
     description: >-
       MongoDB connection String
-    type: string
+    type: secret
     default: mongodb+srv://
     required: true
     immutable: false
