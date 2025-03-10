@@ -107,7 +107,7 @@ params:
     description: >-
       LLM Prompt
     type: string
-    default: "You are a Chatbot. respond the the user only with the context you have from the input provided to you. Don't return anything that is irrelevant to the context."
+    default: "You are a Chatbot. respond the the user only with the context you have from the input provided to you. Don't return anything that is irrelevant to the context. summerise your answer in more human readable  beautified form"
     required: true
     immutable: false
 
