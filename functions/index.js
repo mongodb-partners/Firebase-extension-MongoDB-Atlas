@@ -9,10 +9,9 @@ import { MongoDBAtlasVectorSearch } from "@langchain/mongodb";
 const app = initializeApp();
 
 
-export const mongodbcrud = https.onRequest(async (req, res) => {
-
-  const route = req.path;
-  const payload = req.body;
+export const mongodbcrud = https.onCall(async (data, context) => {
+  const route = context.rawRequest.url;
+  const payload = data;
   const client = new MongoClient(process.env.CONNECTION_STRING);
   const db = client.db(process.env.DATABASE_NAME);
   const collection = db.collection(process.env.COLLECTION_NAME);
@@ -40,6 +39,7 @@ export const mongodbcrud = https.onRequest(async (req, res) => {
 
   try {
     console.log('Connected successfully to MongoDB');
+    console.log(route);
     if (route === "/findOne") {
         const filter = payload.filter || {};
         const projection = payload.projection || {};
@@ -47,26 +47,13 @@ export const mongodbcrud = https.onRequest(async (req, res) => {
           const result = {
             document: await collection.findOne(filter, projection)
             };
-            return res.status(200).send(result);
+            return result;
         }
         finally{
           await client.close();
         }
     }
-    // else if(route === '/find'){
-    //   const aggQuery = [];
-    //   const filter = payload.filter || {};
-    //   const sort = payload.sort || {};
-    //   try {
-    //     const result = await collection.findOne(query);
-    //     console.log('Found document:', result);
-    //     return res.status(200).send(result);
-    //   }
-    //   finally{
-    //     await client.close();
-    //   }
 
-    // }
     else if(route === '/insertOne'){
       const document = payload.document || {};
       if (!document) {
@@ -74,7 +61,7 @@ export const mongodbcrud = https.onRequest(async (req, res) => {
       }
       const result = await collection.insertOne(document);
       console.log('Inserted document:', result.insertedId);
-      return res.status(200).send(result);
+      return result["result"];
     }
     // else if(route === '/insertMany'){
     //   const documents = payload.documents || [];
@@ -86,30 +73,32 @@ export const mongodbcrud = https.onRequest(async (req, res) => {
     // }
     else if(route === '/vectorSearch'){
       const query = payload.query || {};
+      const filter = payload.filter || '';
       if (!query) {
-        return res.status(400).send('Query is required');
+        return 'Query is required';
       }
       try{
         // const singleVector = await embeddings.embedQuery(query);
         // console.log(singleVector);
         const similaritySearchResults = await vectorStore.similaritySearch(
           query,
-          1
+          4,
+          filter
         );
-        for (const doc of similaritySearchResults) {
-          console.log(`* ${doc.pageContent} [${JSON.stringify(doc.metadata, null)}]`);
+        const array_docs = [];
+        for (let i=0; i< similaritySearchResults.length; i++) {
+          array_docs.push(similaritySearchResults[i].pageContent);
         }
+        const message = array_docs.join(" - ");
 
         const aiMsg = await llm.invoke([
           [
             "system",
             process.env.LLM_PROMPT,
           ],
-          similaritySearchResults[0].pageContent,
+          message,
         ]);
-
-        return res.status(200).send(aiMsg.content);
-
+        return aiMsg.content;
       }
       finally{
         await client.close();
@@ -126,6 +115,4 @@ export const mongodbcrud = https.onRequest(async (req, res) => {
         await client.close();
     }
   }
-
-
 })

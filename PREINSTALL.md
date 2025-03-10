@@ -11,6 +11,20 @@ https://firebase.google.com/docs/extensions/publishers/user-documentation#writin
 
 This firebase extension is a v1 for MongoDB Atlas. It can perform the following operations
 
+The data need to sent as POST request and as an JSON e.g 
+
+```
+# for /findOne
+{
+    "data": {"filter":{"name":"sample"}} 
+}
+
+# for /vectorSearch
+{
+    "data": {"query": "User query here"} 
+}
+```
+
     1. /findOne
         * requires user to pass filter in the format {"filter":{"name":"sample"}} 
     2. /insertOne

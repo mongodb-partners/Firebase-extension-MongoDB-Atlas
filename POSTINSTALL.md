@@ -12,11 +12,14 @@ https://firebase.google.com/docs/extensions/publishers/user-documentation#writin
 
 # See it in action
 
-You can test your Extension from the deployed Cloud Function Trigger by navgating to the Cloud Function -> Deployed service name -> Triggers.
+The extension will deploy a cloud function as backend deployed to perform findOne, insterOne and vectorSearch on MongoDB Atlas.
 
 # Using the extension
 
-To use this extesnion you need to import the trigger/https endpoint to your Application Logic.
+To use this extesnion you need to import the trigger/https endpoint to your Application Logic. 
+To use find one user /findOne at the end of the trigger
+To use insert one user /insertOne at the end of the trigger
+To use Atlas VectorSearch user /vectorSearch at the end of the trigger
 
 To learn more about HTTP functions, visit the [functions documentation](https://firebase.google.com/docs/functions/http-events).
 
