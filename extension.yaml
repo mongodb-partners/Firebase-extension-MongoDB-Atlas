@@ -3,11 +3,11 @@ version: 0.0.2
 specVersion: v1beta  # Firebase Extensions specification version; don't change
 
 # Friendly display name for your extension (~3-5 words)
-displayName: MongoDB Atlas
+displayName: Perform Vector Search with MongoDB Atlas
 
 # Brief description of the task your extension performs (~1 sentence)
 description: >-
-  Perform basic operations like findOne, InsertOne and vectorSearch on MongoDB Atlas
+  Perform operations like findOne, InsertOne and vectorSearch on MongoDB Atlas
 author:
   authorName: Venkatesh Shanbhag
   url: https://www.mongodb.com/products/platform/atlas-cloud-providers/google-cloud
@@ -39,17 +39,17 @@ roles:
 
 params:
   - param: CONNECTION_STRING
-    label: MongoDB Connection String of your cluster
+    label: Connection String
     description: >-
-      MongoDB connection String
+      The MongoDB connection String you want to connect to To perform the operation like vectorSearch, findOne and insterOne operations. refer the [guide](https://www.mongodb.com/docs/atlas/tutorial/connect-to-your-cluster/) to get the connection string.
     type: secret
-    default: mongodb+srv://
+    default: mongodb+srv://username:password@mongodb-host
     required: true
     immutable: false
   - param: DATABASE_NAME
     label: Mongodb Database name
     description: >-
-      Mongodb Database name
+      Name of the Mongodb Database from where you want to access the data from.
     type: string
     default: test
     required: true
@@ -57,23 +57,23 @@ params:
   - param: COLLECTION_NAME
     label: Mongodb Collection name
     description: >-
-      Mongodb Collection name
+      Name of the MongoDB collection that will have the vectors and data stored togather.
     type: string
     default: test
     required: true
     immutable: false
   - param: EMBEDDING_MODEL_NAME
-    label: Googel VertexAI Model name
+    label: Googel VertexAI Embedding Model name
     description: >-
-      Mongodb Model name
+      To perform vector search on MongoDB, we need to convert the input query from string to vectors. We will be using the Googles embedding models to generate embeddings that will inturn queried on MongoDB Atlas.
     type: string
     default: text-embedding-004
     required: true
     immutable: false
   - param: LLM_MODEL_NAME
-    label: Googel VertexAI Model name
+    label: Googel VertexAI LLM Model name
     description: >-
-      Mongodb Model name
+      The data retrived from MongoDB Atlas will be passed to Google LLM model to augment and respond back to user more efficiently.
     type: string
     default: "gemini-1.5-pro"
     required: true
@@ -81,7 +81,7 @@ params:
   - param: INDEX_NAME
     label: Mongodb Index name
     description: >-
-      Mongodb Index name
+      The data stored in MongoDB is indexed to perform Vector Search. Name of the index will be vector_index by default while creating the index on MongoDB Atlas.
     type: string
     default: vector_index
     required: true
@@ -89,7 +89,7 @@ params:
   - param: INDEX_FIELD
     label: Mongodb Index field
     description: >-
-      Mongodb Index field
+      This is the Field on which the vectors are generated for a document in MongoDB Atlas.
     type: string
     default: text
     required: true
@@ -97,7 +97,7 @@ params:
   - param: EMBEDDING_FIELD
     label: Mongodb Embedding field
     description: >-
-      Mongodb Embedding field
+      This is the field where the embedding for the data is stored on MongoDB Atlas collection.
     type: string
     default: embedding
     required: true
@@ -105,7 +105,7 @@ params:
   - param: LLM_PROMPT
     label: LLM Prompt
     description: >-
-      LLM Prompt
+      Prompt for LLM to be set to give the context to the LLM about the chatbot application.
     type: string
     default: "You are a Chatbot. respond the the user only with the context you have from the input provided to you. Don't return anything that is irrelevant to the context. summerise your answer in more human readable  beautified form"
     required: true
@@ -115,4 +115,3 @@ events:
   - type: test-publisher.mongodb-functions.v1.complete
     description: >-
       Occurs with MongoDB function execution is complete
-

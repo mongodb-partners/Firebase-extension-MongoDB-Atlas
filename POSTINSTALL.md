@@ -16,6 +16,32 @@ The extension will deploy a cloud function as backend deployed to perform findOn
 
 # Using the extension
 
+You can use this extension by initializing your Firebase app as normal. Below is the example of using MongoDB Vector Search.
+```
+const axios = require('axios');
+
+const app = initializeApp(firebaseConfig);
+const HTTP_ENDPOINT = '${function:function-name.url}';
+
+let data = '{"data":{"query":"tell me about products for Airplane Design Studio"}}';
+
+let config = {
+  method: 'post',
+  maxBodyLength: Infinity,
+  url: HTTP_ENDPOINT + '/vectorSearch',
+  headers: { },
+  data : data
+};
+
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+})
+.catch((error) => {
+  console.log(error);
+});
+```
+
 To use this extesnion you need to import the trigger/https endpoint to your Application Logic. 
 To use find one user /findOne at the end of the trigger
 To use insert one user /insertOne at the end of the trigger
