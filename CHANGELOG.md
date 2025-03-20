@@ -10,7 +10,7 @@
 - Updated: The Vector search should return multiple documents(currently fixed to 4 - Langchain standard).
 - Updated: Updated the function from triggered function to Callable Function.
 
-## Version 0.1.0
+## Version 0.0.3
 
 - Updated the documentation for preinstall and postinstall readme files.
 - Updated the configurations descriptions.
